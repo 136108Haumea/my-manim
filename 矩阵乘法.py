@@ -12,8 +12,10 @@ class test(Scene):
       
 
   def construct(self):
-    
-    self.add(Matrix(matrix=self.matrix_multiplication([[1,2],[3,4]],[[1,2],[3,4]])))
+    m1 = Matrix(matrix=[[1,2],[3,4]])
+    m2 = Matrix(matrix=[[1,2],[3,4]])
+    m3 = Matrix(matrix=self.matrix_multiplication([[1,2],[3,4]],[[1,2],[3,4]]))
+    self.add(VGroup(m1,TexMobject("\\times"),m2,TexMobject("="),m3).arrange(RIGHT))
     #|1 2|* |1 2| = | 7 10|
     #|3 4|  |3 4|   |15 22|
     self.wait()
