@@ -9,7 +9,6 @@ class test(Scene):
     if matrix1_row != matrix2_ele or matrix1_ele != matrix2_row:
       return []
     return [[sum([matrix1[i][j]*matrix2[j][k] for j in range(matrix2_ele)]) for k in range(matrix1_row)] for i in range(matrix1_row)]
-      
 
   def construct(self):
     m1 = Matrix(matrix=[[1,2],[3,4]])
