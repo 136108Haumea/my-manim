@@ -209,7 +209,7 @@ class scene4(Scene):
       Text("他的递推公式(不唯一）：",font='未署名的信').scale(0.5), 
       TexMobject("F_0=0,F_1=1").set_color('#FF8C00'), 
       TexMobject("F_n=F_{n-1}+F_{n-2},n>1").set_color('#FF8C00'),
-      Text("你知道他的通向公式吗？",font='未署名的信').scale(0.5), 
+      Text("你知道他的通项公式吗？",font='未署名的信').scale(0.5), 
       ).scale(1.2)
     text[0][4:10].set_color('#FFEC8B')
     text[1][2:6].set_color('#FF3E96')
@@ -236,7 +236,7 @@ class scene4(Scene):
         Text("称G为序列a的母函数,或称普通母函数(OGF)",font='未署名的信').scale(0.5),
         ).arrange(DOWN), 
       Text("母函数本身不是(从某个定义域射到某个到达域的)函数",font='未署名的信').scale(0.5), 
-      Text("名字中的\"函数\"是出于历史原因而保留的",font='未署名的信').scale(0.5), 
+      Text("名字中的“函数”是出于历史原因而保留的",font='未署名的信').scale(0.5), 
       ).set_color('#B4EEB4')
 
     text2[0:2].move_to(ORIGIN)
@@ -276,7 +276,7 @@ class scene4(Scene):
     text2[2][7][3:5].set_color('#FFBBFF')
     text2[2][7][5].set_color('#7FFF00')
     text2[2][7][7:10].set_color('#D15FEE')
-    text2[2][7][14:18].set_color('#D15FEE')
+    text2[2][7][13:18].set_color('#D15FEE')
     
     self.play(Write(text2[2][0:2]), run_time=2)
     self.wait(2)
