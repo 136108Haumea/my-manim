@@ -209,3 +209,53 @@ class scene5(Scene):
       )
     self.wait(5)
     self.play(FadeOut(Group(*self.mobjects)))
+    
+    
+class heart_boxes(SpecialThreeDScene):
+
+  CONFIG = {
+    "default_angled_camera_position": {
+      "phi": 70 * DEGREES,
+      "theta": -45 * DEGREES,
+      "distance": 50,
+      },
+    "camera_config": {
+      "background_color": '#FFDEAD'
+      },
+    "const":0.5
+    }
+
+  def construct(self):
+
+    self.set_camera_to_default_position()
+    self.var_phi = 0
+
+    boxes = MyBoxes(
+      fill_color=average_color('#FF4040', '#FF69B4'), 
+      box_height=0.25,
+      bottom_size=(0.25, 0.25), 
+      resolution=(50,50),
+      )
+
+    boxes2 = VGroup(*[boxes.copy().shift(i*OUT*0.25) for i in range(50)]).shift(25*IN*0.25).scale(0.5)
+    
+    fxyz = lambda a:(\
+      (self.const*a[0])**2+9/4*(self.const*a[1])**2+(self.const*a[2])**2-1)**3-\
+      (self.const*a[0])**2*(self.const*a[2])**3-9/80*(self.const*a[1])**2*(self.const*a[2])**3
+
+    heart = VGroup()
+    for i in boxes2:
+      for j in i:
+        if fxyz(j.get_center())<0:
+          heart.add(j)
+
+    text = TexMobject(
+      r"(x^2+\frac{9}{4}y^2+z^2-1)^3-x^2z^3-\frac{9}{80}y^2z^3=0",
+      color='#FF69B4',stroke_width=2,
+      ).scale(0.6)
+    
+    self.add_fixed_in_frame_mobjects(text.to_corner(UL))
+    self.play(ShowCreation(heart),run_time=3)
+    self.play(Rotating(mobject=heart,radians=2*PI,about_point=ORIGIN),run_time=10)
+    self.wait(5)
+        
