@@ -117,12 +117,23 @@ class scene2(Scene):
         text[1][13:].align_to(text[0],RIGHT)
         VGroup(text[4],text[5].scale(1.5)).arrange(RIGHT).next_to(text[3],DOWN,aligned_edge=RIGHT)
         text.move_to(ORIGIN)
-        [text[i][0:2].set_color('#EEAEEE') for i in range(4)]
-        [text[i][2:4].set_color('#5F9EA0') for i in range(4)]
-        [text[i][5:7].set_color('#00FF00') for i in range(4)]
-        [text[i][-10:-8].set_color('#00FF00') for i in range(4)]
-        [text[i][-3:-1].set_color('#FF7F24') for i in range(4)]
-        [text[i][8:8+(5,4)[i==1]].set_color('#9B30FF') for i in range(4)]
+        #[text[i][0:2].set_color('#EEAEEE') for i in range(4)]
+        #[text[i][2:4].set_color('#5F9EA0') for i in range(4)]
+        #[text[i][5:7].set_color('#00FF00') for i in range(4)]
+        #[text[i][-10:-8].set_color('#00FF00') for i in range(4)]
+        #[text[i][-3:-1].set_color('#FF7F24') for i in range(4)]
+        #[text[i][8:8+(5,4)[i==1]].set_color('#9B30FF') for i in range(4)]
+
+        [
+            VGroup(
+                text[i][0:2].set_color('#EEAEEE'),
+                text[i][2:4].set_color('#5F9EA0'),
+                text[i][5:7].set_color('#00FF00'),
+                text[i][-10:-8].set_color('#00FF00'),
+                text[i][-3:-1].set_color('#FF7F24'),
+                text[i][8:8+(5,4)[i==1]].set_color('#9B30FF'),
+            ) for i in range(4)]
+
         #[debugTex(self,text[i]) for i in range(4)]
         #self.add(text)
 
@@ -209,4 +220,10 @@ class scene4(Scene):
                 )
             self.wait(np.random.randint(3,7)/10)
 
+            #self.add(curve.\
+            #    move_to(np.random.randint(-800,800)/100*LEFT+np.random.randint(-500,500)/100*UP)\
+            #        .set_stroke(opacity=np.random.randint(0,8)/10)\
+            #            .scale(np.random.randint(15,30)/10))
+
         self.wait(5)
+
