@@ -59,7 +59,7 @@ class scene(Scene):
         self.play(ReplacementTransform(curve,curve2))
         self.wait(2)
 
-        text3 = Text("如此，可以制作各式各样的烟火图案",font='未署名的信').scale(0.5)
+        text3 = Text("如此，可以制作各式各样的花火图案",font='未署名的信').scale(0.5)
         self.play(ReplacementTransform(curve2,text3))
         self.wait()
         self.play(FadeOut(text3))
