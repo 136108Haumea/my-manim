@@ -12,7 +12,7 @@ class scene(Scene):
                 '#ff3300','#ff6600','#ff9900','#ffcc00','#ccff33',
             ], 100)
 
-        text = Text("先来制作烟火",font='未署名的信').set_color_by_gradient(*mycolors)
+        text = Text("先来制作花火",font='未署名的信').set_color_by_gradient(*mycolors)
         self.play(Write(text))
         self.wait()
         self.play(Erase(text))
