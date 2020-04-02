@@ -152,3 +152,63 @@ class merge_sort_visualization(Scene):
         mergeSort(random_height,0,len(random_height)-1)
         self.wait(3)
 
+
+class bubble_sort_visualization(Scene):
+    CONFIG = {
+        "amount":50,
+        "interval":0.333,
+        "rect_distance":0.05,
+    }
+    def construct(self):
+        np.random.seed(int(time.time()))
+
+        lower_height,upper_height = 100000,3000000
+        sort_amount = self.amount
+
+        My_colors = color_gradient(['#8B5742','#FFA500','#FFE1FF','#7D26CD'],sort_amount)
+        random_height = [
+            np.random.randint(lower_height,upper_height)/upper_height*6\
+                for i in range(sort_amount)
+            ]
+        rectag_width = 12/sort_amount-self.rect_distance
+        random_height_copy = random_height.copy()
+        random_height_copy.sort()
+
+        array = [
+            Rectangle(height = random_height[i], width = rectag_width).set_stroke(width=0)\
+                .set_fill(opacity=1,color=My_colors[random_height_copy.index(random_height[i])])\
+                .move_to(6*LEFT+(i+0.5)*12/sort_amount*RIGHT).align_to(3*DOWN,DOWN)\
+                    for i in range(sort_amount)
+            ]
+
+        #self.play(ShowCreation(VGroup(*array)))
+        self.add(VGroup(*array))
+
+        for i in range(len(array)-1):
+            mark=0
+            for j in range(i+1,len(array)):
+                n1 = (-6+(i)*12/sort_amount)*RIGHT
+                m1 = (-6+(i+1)*12/sort_amount)*RIGHT
+                rect1 = Polygon(n1+DOWN*3,m1+DOWN*3,m1+UP*3.5,n1+UP*3.5,stroke_width=0,fill_color='#878787',fill_opacity=0.3,plot_depth=-1)
+                n2 = (-6+(j)*12/sort_amount)*RIGHT
+                m2 = (-6+(j+1)*12/sort_amount)*RIGHT
+                rect2 = Polygon(n2+DOWN*3,m2+DOWN*3,m2+UP*3.5,n2+UP*3.5,stroke_width=0,fill_color='#878787',fill_opacity=0.3,plot_depth=-1)
+                self.add(rect1,rect2)
+                if array[i].get_height()>array[j].get_height():
+                    self.play(
+                        array[i].move_to,[array[j].get_center()[0],array[i].get_center()[1],0],
+                        array[j].move_to,[array[i].get_center()[0],array[j].get_center()[1],0],
+                        rate_func=smooth,
+                        run_time=self.interval,
+                    )
+                    array[i],array[j] = array[j],array[i]
+                    mark=1
+                self.wait(0.5)
+                self.mobjects.remove(rect1)
+                self.mobjects.remove(rect2)
+                #self.mobjects.pop(0)
+                #self.mobjects.pop(0)
+            if mark==0:
+                break
+        
+        self.wait(3)
