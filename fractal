@@ -114,3 +114,88 @@ class scene2(Scene):
         
         self.wait(3)
 
+
+class scene3(Scene):
+    CONFIG = {
+        "times":15, 
+    }
+    def construct(self):
+
+        a = [LEFT*2,RIGHT*2]
+        c = [RIGHT*2,LEFT*2]
+        colors = ['#8B5742','#FFA500','#FFE1FF','#7D26CD']
+        My_colors = color_gradient(colors,len(a)-1)
+
+        DragonCurve1 = VGroup(Line(*a).set_stroke(width=9,color=My_colors[0],opacity=0.4))
+        DragonCurve2 = VGroup(Line(*a).set_stroke(width=1,color=My_colors[0],opacity=1.0))
+
+        DragonCurve5 = VGroup(Line(*c).set_stroke(width=9,color=My_colors[0],opacity=0.4))
+        DragonCurve6 = VGroup(Line(*c).set_stroke(width=1,color=My_colors[0],opacity=1.0))
+
+        self.play(
+            ShowCreation(DragonCurve1),
+            ShowCreation(DragonCurve2),
+            ShowCreation(DragonCurve5),
+            ShowCreation(DragonCurve6),
+            )
+
+        DragonCurve3,DragonCurve4 = VGroup(),VGroup()
+        DragonCurve7,DragonCurve8 = VGroup(),VGroup()
+
+        for i in range(self.times-1):
+            b = []
+            d = []
+            for j in range(len(a)):
+                if j!=0:
+                    b.append(point_rotate(a[j],(a[j]+a[j-1])/2,PI/2*(+1,-1)[j%2!=0]))
+                    d.append(point_rotate(c[j],(c[j]+c[j-1])/2,PI/2*(+1,-1)[j%2!=0]))
+                b.append(a[j])
+                d.append(c[j])
+
+            My_colors = color_gradient(colors,len(b)-1)
+
+            for j in range(len(b)-1):
+                DragonCurve3.add(Line(b[j],b[j+1]).set_stroke(width=5,color=My_colors[j],opacity=0.4))
+                DragonCurve4.add(Line(b[j],b[j+1]).set_stroke(width=1,color=My_colors[j],opacity=1.0))
+                DragonCurve7.add(Line(d[j],d[j+1]).set_stroke(width=5,color=My_colors[j],opacity=0.4))
+                DragonCurve8.add(Line(d[j],d[j+1]).set_stroke(width=1,color=My_colors[j],opacity=1.0))
+
+            self.play(
+                *[
+                    ReplacementTransform(DragonCurve1[j],DragonCurve3[2*j:2*j+2])\
+                    for j in range(len(DragonCurve1))
+                ],
+                *[
+                    ReplacementTransform(DragonCurve2[j],DragonCurve4[2*j:2*j+2])\
+                    for j in range(len(DragonCurve2))
+                ],
+                *[
+                    ReplacementTransform(DragonCurve5[j],DragonCurve7[2*j:2*j+2])\
+                    for j in range(len(DragonCurve5))
+                ],
+                *[
+                    ReplacementTransform(DragonCurve6[j],DragonCurve8[2*j:2*j+2])\
+                    for j in range(len(DragonCurve6))
+                ],
+                rate_func=rush_into,
+                run_time=1,
+                )
+            self.wait(0.3)
+
+            a = b
+            [DragonCurve1.submobjects.pop() for _ in range(len(DragonCurve1))]
+            [DragonCurve2.submobjects.pop() for _ in range(len(DragonCurve2))]
+            DragonCurve1.add(*DragonCurve3)
+            DragonCurve2.add(*DragonCurve4)
+            [DragonCurve3.submobjects.pop() for _ in range(len(DragonCurve3))]
+            [DragonCurve4.submobjects.pop() for _ in range(len(DragonCurve4))]
+
+            c = d
+            [DragonCurve5.submobjects.pop() for _ in range(len(DragonCurve5))]
+            [DragonCurve6.submobjects.pop() for _ in range(len(DragonCurve6))]
+            DragonCurve5.add(*DragonCurve7)
+            DragonCurve6.add(*DragonCurve8)
+            [DragonCurve7.submobjects.pop() for _ in range(len(DragonCurve7))]
+            [DragonCurve8.submobjects.pop() for _ in range(len(DragonCurve8))]
+        
+        self.wait(3)
