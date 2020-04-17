@@ -117,7 +117,7 @@ class scene2(Scene):
 
 class scene3(Scene):
     CONFIG = {
-        "times":15, 
+        "times":16, 
     }
     def construct(self):
 
@@ -129,8 +129,8 @@ class scene3(Scene):
         DragonCurve1 = VGroup(Line(*a).set_stroke(width=9,color=My_colors[0],opacity=0.4))
         DragonCurve2 = VGroup(Line(*a).set_stroke(width=1,color=My_colors[0],opacity=1.0))
 
-        DragonCurve5 = VGroup(Line(*c).set_stroke(width=9,color=My_colors[0],opacity=0.4))
-        DragonCurve6 = VGroup(Line(*c).set_stroke(width=1,color=My_colors[0],opacity=1.0))
+        DragonCurve5 = VGroup(Line(*c).set_stroke(width=9,color='#FFA500', opacity=0.4))
+        DragonCurve6 = VGroup(Line(*c).set_stroke(width=1,color='#FFA500', opacity=1.0))
 
         self.play(
             ShowCreation(DragonCurve1),
@@ -141,6 +141,8 @@ class scene3(Scene):
 
         DragonCurve3,DragonCurve4 = VGroup(),VGroup()
         DragonCurve7,DragonCurve8 = VGroup(),VGroup()
+        
+        dis = (8-1)/self.times
 
         for i in range(self.times-1):
             b = []
@@ -155,10 +157,10 @@ class scene3(Scene):
             My_colors = color_gradient(colors,len(b)-1)
 
             for j in range(len(b)-1):
-                DragonCurve3.add(Line(b[j],b[j+1]).set_stroke(width=5,color=My_colors[j],opacity=0.4))
-                DragonCurve4.add(Line(b[j],b[j+1]).set_stroke(width=1,color=My_colors[j],opacity=1.0))
-                DragonCurve7.add(Line(d[j],d[j+1]).set_stroke(width=5,color=My_colors[j],opacity=0.4))
-                DragonCurve8.add(Line(d[j],d[j+1]).set_stroke(width=1,color=My_colors[j],opacity=1.0))
+                DragonCurve3.add(Line(b[j],b[j+1]).set_stroke(width=8-i*dis,color=My_colors[j],opacity=0.4))
+                DragonCurve4.add(Line(b[j],b[j+1]).set_stroke(width=1-0*dis,color=My_colors[j],opacity=1.0))
+                DragonCurve7.add(Line(d[j],d[j+1]).set_stroke(width=8-i*dis,color=My_colors[0],opacity=0.4))
+                DragonCurve8.add(Line(d[j],d[j+1]).set_stroke(width=1-0*dis,color=My_colors[0],opacity=1.0))
 
             self.play(
                 *[
