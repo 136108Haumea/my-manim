@@ -201,3 +201,189 @@ class scene3(Scene):
             [DragonCurve8.submobjects.pop() for _ in range(len(DragonCurve8))]
         
         self.wait(3)
+
+
+def GetDragon(start=LEFT/2, end=RIGHT/2, times=11, DexOrLev=1, color='#F08080'):
+    #DexOrLev表示右旋或者左旋,1表示右旋
+    if DexOrLev==1:
+        dol = (+1,-1)
+    else:
+        dol = (-1,+1)
+    a,b = [start, end],[]
+    for i in range(times-1):
+        for j in range(len(a)):
+            if j!=0:
+                b.append(point_rotate(a[j],(a[j]+a[j-1])/2,PI/2*dol[j%2!=0]))
+            b.append(a[j])
+        a = b
+        b = []
+    return VGroup(
+        *[Line(a[i],a[i+1]).set_stroke(width=1,color=color,opacity=1.0) for i in range(len(a)-1)],
+        *[Line(a[i],a[i+1]).set_stroke(width=4,color=color,opacity=0.4) for i in range(len(a)-1)],
+        )
+
+class scene4(Scene):
+    def construct(self):
+        colors = ['#8B5742','#FFA500','#FFE1FF','#7D26CD']
+        My_colors = color_gradient(colors,6)
+        
+        dragon = GetDragon(start=LEFT*3,end=LEFT*2,color=My_colors[0])
+        DragonCurveg = VGroup(
+            VGroup(*dragon,*dragon.copy().rotate(about_point=LEFT*2.5,angle=PI)))
+        for i in range(5):
+            DragonCurveg.add(DragonCurveg[-1].copy().set_color(My_colors[i+1]).shift(RIGHT))
+        
+        for i in range(len(DragonCurveg)):
+            self.play(FadeIn(DragonCurveg[i]))
+            self.wait(0.3)
+
+        DragonCurveg2 = DragonCurveg.copy()
+        DragonCurveg3 = DragonCurveg.copy()
+        
+        for i in range(len(DragonCurveg)):
+            DragonCurveg2[i].move_to(LEFT*2.5+RIGHT*(i+2)%6+UP)
+            DragonCurveg3[i].move_to(LEFT*2.5+RIGHT*(i+4)%6+DOWN)
+        
+        for i in range(len(DragonCurveg)):
+            self.play(
+                FadeIn(DragonCurveg2[i]),
+                FadeIn(DragonCurveg3[i]),
+                )
+            self.wait(0.3)
+
+        self.wait(3)
+    
+
+class scene5(Scene):
+    def construct(self):
+        colors = ['#8B5742','#FFA500','#FFE1FF','#7D26CD']
+        My_colors = color_gradient(colors,9)
+        
+        dragon = GetDragon(start=ORIGIN,end=UP,color=My_colors[0])
+        DragonCurveg = VGroup(
+            *[
+                dragon.copy().rotate(about_point=ORIGIN,angle=i*PI/2).set_color(My_colors[i])\
+                 for i in range(4)
+            ])
+            
+        for i in range(len(DragonCurveg)):
+            self.play(FadeIn(DragonCurveg[i]))
+            self.wait(0.3)
+        self.wait()
+
+        self.play(DragonCurveg.set_color,My_colors[0])
+        self.wait()
+
+        pos = [2*LEFT, *[2*UL+i*2*RIGHT for i in range(3)], 2*RIGHT,  *[2*DR+i*2*LEFT for i in range(3)]]
+        DragonCurveg2 = VGroup()
+        for i in range(len(pos)):
+            DragonCurveg2.add(DragonCurveg.copy().set_color(My_colors[i+1]).move_to(pos[i]))
+        
+        for i in range(len(DragonCurveg2)):
+            self.play(FadeIn(DragonCurveg2[i]))
+            self.wait(0.3)
+
+        self.wait(3)
+
+
+class scene5(Scene):
+    def construct(self):
+        colors = ['#8B5742','#FFA500','#FFE1FF','#7D26CD']
+        My_colors = color_gradient(colors,9)
+        
+        dragon = GetDragon(start=ORIGIN,end=UP,color=My_colors[0])
+        DragonCurveg = VGroup(
+            *[
+                dragon.copy().rotate(about_point=ORIGIN,angle=i*PI/2).set_color(My_colors[i])\
+                 for i in range(4)
+            ])
+            
+        for i in range(len(DragonCurveg)):
+            self.play(FadeIn(DragonCurveg[i]))
+            self.wait(0.3)
+        self.wait()
+
+        self.play(DragonCurveg.set_color,My_colors[0])
+        self.wait()
+
+        pos = [UL,UP*2,UR,RIGHT*2,DR,DOWN*2,DL,LEFT*2]
+        DragonCurveg2 = VGroup()
+        for i in range(len(pos)):
+            DragonCurveg2.add(DragonCurveg.copy().set_color(My_colors[i+1]).move_to(pos[i]))
+        
+        for i in range(len(DragonCurveg2)):
+            self.play(FadeIn(DragonCurveg2[i]))
+            self.wait(0.3)
+
+        self.wait(3)
+
+
+class scene6(Scene):
+    def construct(self):
+        colors = ['#8B5742','#FFA500','#FFE1FF','#7D26CD']
+        My_colors = color_gradient(colors,9)
+        
+        dragon = GetDragon(start=UP,end=ORIGIN,DexOrLev=0,color=My_colors[0])
+        
+        DragonCurveg = VGroup(
+            *[
+                dragon.copy().rotate(about_point=ORIGIN,angle=i*PI/2).set_color(My_colors[i])\
+                 for i in range(4)
+            ])
+            
+        for i in range(len(DragonCurveg)):
+            self.play(FadeIn(DragonCurveg[i]))
+            self.wait(0.3)
+        self.wait()
+        
+        self.play(DragonCurveg.set_color,My_colors[0])
+        self.wait()
+        
+        pos = [UL,UP*2,UR,RIGHT*2,DR,DOWN*2,DL,LEFT*2]
+        DragonCurveg2 = VGroup()
+        for i in range(len(pos)):
+            DragonCurveg2.add(DragonCurveg.copy().set_color(My_colors[i+1]).move_to(pos[i]))
+        
+        for i in range(len(DragonCurveg2)):
+            self.play(FadeIn(DragonCurveg2[i]))
+            self.wait(0.3)
+
+        self.wait(3)
+        
+
+class scene7(Scene):
+    def construct(self):
+        colors = ['#8B5742','#FFA500','#FFE1FF','#7D26CD']
+        My_colors = color_gradient(colors,7)
+        
+        DragonCurveg = VGroup(
+            GetDragon(start=DL/2,end=UL/2,DexOrLev=0).set_color(My_colors[0]),
+            GetDragon(start=UR/2,end=UL/2,DexOrLev=0).set_color(My_colors[1]),
+            GetDragon(start=UR/2,end=DR/2,DexOrLev=0).set_color(My_colors[2]),
+            GetDragon(start=DL/2,end=DR/2,DexOrLev=0).set_color(My_colors[3]),
+            )
+            
+        for i in range(len(DragonCurveg)):
+            self.play(FadeIn(DragonCurveg[i]))
+            self.wait(0.3)
+        self.wait()
+        
+        self.play(DragonCurveg.set_color,My_colors[0])
+        self.wait()
+        
+        pos = [LEFT*2,UL,UR,RIGHT*2,DR,DL]
+        DragonCurveg2 = VGroup()
+        for i in range(len(pos)):
+            DragonCurveg2.add(DragonCurveg.copy().set_color(My_colors[i+1]).move_to(pos[i]))
+        
+        for i in range(len(DragonCurveg2)):
+            self.play(FadeIn(DragonCurveg2[i]))
+            self.wait(0.3)
+
+        self.wait(3)
+
+class test(Scene):
+    def construct(self):
+        self.add(GetDragon(start=DL/2,end=DR/2,DexOrLev=0))
+        
+        
