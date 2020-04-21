@@ -1,6 +1,27 @@
 from manimlib.imports import *
 import math
 
+
+def GetDragon(start=LEFT/2, end=RIGHT/2, times=11, DexOrLev=1, color='#F08080', stroke_width1=1, stroke_width2=4):
+    #DexOrLev表示右旋或者左旋,1表示右旋
+    if DexOrLev==1:
+        dol = (+1,-1)
+    else:
+        dol = (-1,+1)
+    a,b = [start, end],[]
+    for i in range(times-1):
+        for j in range(len(a)):
+            if j!=0:
+                b.append(point_rotate(a[j],(a[j]+a[j-1])/2,PI/2*dol[j%2!=0]))
+            b.append(a[j])
+        a = b
+        b = []
+    return VGroup(
+        *[Line(a[i],a[i+1]).set_stroke(width=stroke_width1,color=color,opacity=1.0) for i in range(len(a)-1)],
+        *[Line(a[i],a[i+1]).set_stroke(width=stroke_width2,color=color,opacity=0.4) for i in range(len(a)-1)],
+        )
+
+
 class scene1(Scene):
     CONFIG = {
         "times":16, 
@@ -203,25 +224,6 @@ class scene3(Scene):
         self.wait(3)
 
 
-def GetDragon(start=LEFT/2, end=RIGHT/2, times=11, DexOrLev=1, color='#F08080'):
-    #DexOrLev表示右旋或者左旋,1表示右旋
-    if DexOrLev==1:
-        dol = (+1,-1)
-    else:
-        dol = (-1,+1)
-    a,b = [start, end],[]
-    for i in range(times-1):
-        for j in range(len(a)):
-            if j!=0:
-                b.append(point_rotate(a[j],(a[j]+a[j-1])/2,PI/2*dol[j%2!=0]))
-            b.append(a[j])
-        a = b
-        b = []
-    return VGroup(
-        *[Line(a[i],a[i+1]).set_stroke(width=1,color=color,opacity=1.0) for i in range(len(a)-1)],
-        *[Line(a[i],a[i+1]).set_stroke(width=4,color=color,opacity=0.4) for i in range(len(a)-1)],
-        )
-
 class scene4(Scene):
     def construct(self):
         colors = ['#8B5742','#FFA500','#FFE1FF','#7D26CD']
@@ -385,5 +387,33 @@ class scene7(Scene):
 class test(Scene):
     def construct(self):
         self.add(GetDragon(start=DL/2,end=DR/2,DexOrLev=0))
+
+
+class graphscene(Scene):
+    def construct(self):
+        colors = ['#8B5742','#FFA500','#F08080','#4B0082','#FFE1FF','#008B8B','#7D26CD']
+        My_colors = color_gradient(colors,12)
         
+        dragon = GetDragon(start=LEFT*3,end=LEFT*2,times=12,color=My_colors[0],stroke_width2=2.5)
+        DragonCurveg = VGroup(
+            VGroup(dragon,dragon.copy().rotate(about_point=LEFT*2.5,angle=PI).set_color(My_colors[1])))
+        for i in range(5):
+            DragonCurveg.add(DragonCurveg[-1].copy().set_color(My_colors[i+1]).shift(RIGHT))
+            DragonCurveg[-1][0].set_color(My_colors[2+2*i])
+            DragonCurveg[-1][1].set_color(My_colors[3+2*i])
+
+        DragonCurveg2 = DragonCurveg.copy()
+        DragonCurveg3 = DragonCurveg.copy()
+        
+        for i in range(len(DragonCurveg)):
+            DragonCurveg2[i].move_to(LEFT*2.5+RIGHT*(i+2)%6+UP)
+            DragonCurveg3[i].move_to(LEFT*2.5+RIGHT*(i+4)%6+DOWN)
+        
+        DragonCurveg_all = VGroup(DragonCurveg,DragonCurveg2,DragonCurveg3)
+        self.add(DragonCurveg_all)
+
+        pos = [LEFT*6,LEFT*6+UP*3,UP*3,RIGHT*6+UP*3,RIGHT*6,RIGHT*6+DOWN*3,DOWN*3,LEFT*6+DOWN*3]
+        for i in range(len(pos)):
+            self.add(DragonCurveg_all.copy().move_to(pos[i]))
+           
         
