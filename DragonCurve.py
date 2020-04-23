@@ -392,25 +392,119 @@ class test(Scene):
 class graphscene(Scene):
     def construct(self):
         colors = ['#EE3A8C','#DC143C','#228B22','#FFA500','#FFFF00','#F08080','#FFE1FF','#7D26CD','#4B0082']
-        My_colors = color_gradient(colors,36)
+        My_colors = color_gradient(colors,18)
         
-        dragon1 = GetDragon(start=LEFT*9,end=LEFT*8,times=12,stroke_width2=2.5)
-        dragon2 = dragon1.copy().rotate(about_point=LEFT*8.5,angle=PI)
+        dragon1 = GetDragon(start=LEFT*9,end=LEFT*7,times=14,stroke_width2=2.5)
+        dragon2 = dragon1.copy().rotate(about_point=LEFT*8,angle=PI)
+        
         DragonCurveg = VGroup()
-        for i in range(18):
+        for i in range(9):
             DragonCurveg.add(
                 VGroup(
-                    dragon1.copy().shift(i*RIGHT).set_color(My_colors[2*i+0]),
-                    dragon2.copy().shift(i*RIGHT).set_color(My_colors[2*i+1]),
+                    dragon1.copy().shift(i*2*RIGHT).set_color(My_colors[2*i+0]),
+                    dragon2.copy().shift(i*2*RIGHT).set_color(My_colors[2*i+1]),
                 ))
+
+        self.add(DragonCurveg) 
+                
+        for i in range(3):
+            a = DragonCurveg.copy()
+            b = DragonCurveg.copy()
+            for j in range(len(a)):
+                a[j].move_to([-8+((j+2*(i+1))%len(a))*2,+2*i+2,0])
+                b[j].move_to([-8+((j-2*(i+1))%len(b))*2,-2*i-2,0])
+            self.add(a,b)
+
+
+class graphscene2(Scene):
+    def construct(self):
+        colors = ['#EE3A8C','#DC143C','#228B22','#FFA500','#FFFF00','#F08080','#FFE1FF','#7D26CD','#4B0082']
+        My_colors = color_gradient(colors,20)
         
+        dragon  = GetDragon(start=LEFT*10,end=LEFT*8,times=14)
+        dragong = VGroup(*[
+            dragon.copy().rotate(about_point=LEFT*8,angle=i*PI/2)\
+                for i in range(4)
+            ])
+        
+        DragonCurveg = VGroup()
+        for i in range(5):
+            DragonCurveg.add(
+                VGroup(
+                    *[
+                        dragong[j].copy().shift(i*4*RIGHT).set_color(My_colors[4*i+j])\
+                            for j in range(4)
+                ]))
+
+        self.add(DragonCurveg)
+
+        for i in range(3):
+            a = DragonCurveg.copy()
+            b = DragonCurveg.copy()
+            for j in range(len(a)):
+                a[j].move_to([-8+(0,2)[i%2==0]+((j+2*(i+1))%len(a))*4,+2*i+2,0])
+                b[j].move_to([-8+(0,2)[i%2==0]+((j-2*(i+1))%len(b))*4,-2*i-2,0])
+            self.add(a,b)
+
+
+class graphscene3(Scene):
+    def construct(self):
+        colors = ['#EE3A8C','#DC143C','#228B22','#FFA500','#FFFF00','#F08080','#FFE1FF','#7D26CD','#4B0082']
+        My_colors = color_gradient(colors,20)
+        
+        dragon  = GetDragon(start=LEFT*8,end=LEFT*10,DexOrLev=0,times=14)
+        dragong = VGroup(*[
+            dragon.copy().rotate(about_point=LEFT*8,angle=i*PI/2)\
+                for i in range(4)
+            ])
+        
+        DragonCurveg = VGroup()
+        for i in range(5):
+            DragonCurveg.add(
+                VGroup(
+                    *[
+                        dragong[j].copy().shift(i*4*RIGHT).set_color(My_colors[4*i+j])\
+                            for j in range(4)
+                ]))
+
+        self.add(DragonCurveg)
+
+        for i in range(3):
+            a = DragonCurveg.copy()
+            b = DragonCurveg.copy()
+            for j in range(len(a)):
+                a[j].move_to([-8+(0,2)[i%2==0]+((j+2*(i+1))%len(a))*4,+2*i+2,0])
+                b[j].move_to([-8+(0,2)[i%2==0]+((j-2*(i+1))%len(b))*4,-2*i-2,0])
+            self.add(a,b)   
+
+
+class graphscene4(Scene):
+    def construct(self):
+        colors = ['#EE3A8C','#DC143C','#228B22','#FFA500','#FFFF00','#F08080','#FFE1FF','#7D26CD','#4B0082']
+        My_colors = color_gradient(colors,20)
+        
+        pos = [(DL,UL),(UR,UL),(UR,DR),(DL,DR)]
+        dragong = VGroup(
+            *[
+                GetDragon(start=pos[i][0],end=pos[i][1],DexOrLev=0,times=14)\
+                    for i in range(4)
+            ]).shift(LEFT*8)
+        
+        DragonCurveg = VGroup()
+        for i in range(5):
+            DragonCurveg.add(
+                VGroup(
+                    *[
+                        dragong[j].copy().shift(i*4*RIGHT).set_color(My_colors[4*i+j])\
+                            for j in range(4)
+                ]))
+
         self.add(DragonCurveg)
         
-        DragonCurveg2 = VGroup()
-        for j in range(4):
-            for i in range(len(DragonCurveg)):
-                DragonCurveg2.add(DragonCurveg[i].copy().move_to(LEFT*8.5+RIGHT*(i+2*(j+1))%18+(j+1)*UP))
-                DragonCurveg2.add(DragonCurveg[i].copy().move_to(LEFT*8.5+RIGHT*(i-2*(j+1))%18+(j+1)*DOWN))
-        
-        self.add(DragonCurveg2)
-        
+        for i in range(3):
+            a = DragonCurveg.copy()
+            b = DragonCurveg.copy()
+            for j in range(len(a)):
+                a[j].move_to([-8+(0,2)[i%2==0]+((j+2*(i+1))%len(a))*4,+2*i+2,0])
+                b[j].move_to([-8+(0,2)[i%2==0]+((j-2*(i+1))%len(b))*4,-2*i-2,0])
+            self.add(a,b)
