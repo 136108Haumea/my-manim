@@ -508,3 +508,6 @@ class graphscene4(Scene):
                 a[j].move_to([-8+(0,2)[i%2==0]+((j+2*(i+1))%len(a))*4,+2*i+2,0])
                 b[j].move_to([-8+(0,2)[i%2==0]+((j-2*(i+1))%len(b))*4,-2*i-2,0])
             self.add(a,b)
+
+
+            
