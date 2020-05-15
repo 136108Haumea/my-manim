@@ -1,5 +1,4 @@
 from manimlib.imports import *
-from manimlib.gatsby_supplemental_code.ContinuedFraction import *
 import math
 
 
