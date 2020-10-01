@@ -1,5 +1,5 @@
 # my-manim
-# Decadance
+# Decadence
 # 仅供学习用
 
 class ruledsurfacedef(Scene):
