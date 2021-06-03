@@ -1,0 +1,301 @@
+from manimlib.imports import *
+from manim_sandbox.utils.imports import *
+import cv2
+
+class scene3(Scene):
+    CONFIG = {
+        "camera_config": {
+            # "background_color": '#FFFFFF',
+            },
+        }
+    def construct(self):
+        # img = cv2.imread(r"C:\Users\Administrator\Desktop\Singular Value Decomposition(SVD)\image6.jpg")#2048*2048
+        # print(len(img))#2048
+        # print(len(img[0]))#2048
+        # print(len(img[1]))#2048
+        # print(len(img[1][0]))#2048
+        '''
+        img = cv2.imread(r"C:\\Users\Administrator\Desktop\Singular Value Decomposition(SVD)\image4.jpg")#166*166
+        picture1 = self.drawpicture(img, vague=5, scalar=3, reduce_scalar=1000).shift(LEFT * 3)
+        trs_list = [1, 2, 3, 5, 10, 15, 20, 30, 50, 70, 100, 166]
+        # trs_list = [1, 2, 3, 4, 10]
+        # trs_list = [10]
+        picturei = VGroup()
+        for i in trs_list:
+            picturei.add(self.drawpicture(img, vague=5, scalar=3, reduce_scalar=i).shift(RIGHT * 3))
+        # self.add(picture1, picture2)
+        text_0 = Text("图片的大小："+str(166*166), font='思源黑体 CN Medium').next_to(picture1, DOWN)
+        text_i = VGroup()
+        text_index_i = VGroup()
+        for i in range(len(picturei)):
+            text_i.add(Text("图片的大小："+str(166*trs_list[i]+trs_list[i]+trs_list[i]*166), font='思源黑体 CN Medium').next_to(picturei[i], DOWN))
+            text_index_i.add(Text("对角阵大小："+str(trs_list[i]), font='思源黑体 CN Medium').next_to(picturei[i], UP))
+        # self.add(picture1, picturei[0])
+        '''
+        # img = cv2.imread(r"C:\Users\Administrator\Desktop\Singular Value Decomposition(SVD)\image6.jpg")  # 147*199
+        img = cv2.imread(r"C:\Users\Administrator\Desktop\Singular Value Decomposition(SVD)\image5.jpg")  # 251*188
+        picture1 = self.drawpicture(img, vague=16, scalar=4.5, reduce_scalar=1000).shift(LEFT * 3)
+        trs_list = [1, 2, 3, 5, 10, 15, 20, 30, 50, 70, 100, 188]
+        # trs_list = [1, 2, 3, 4, 10]
+        trs_list = [20]
+        picturei = VGroup()
+        for i in trs_list:
+            picturei.add(self.drawpicture(img, vague=16, scalar=4.5, reduce_scalar=i).shift(RIGHT * 3))
+        # self.add(picture1, picture2)
+        '''
+        text_0 = Text("图片的大小：" + str(147 * 199), font='思源黑体 CN Medium').next_to(picture1, DOWN)
+        text_i = VGroup()
+        text_index_i = VGroup()
+        for i in range(len(picturei)):
+            text_i.add(Text("图片的大小：" + str(147 * trs_list[i] + trs_list[i] + trs_list[i] * 199),
+                            font='思源黑体 CN Medium').next_to(picturei[i], DOWN))
+            text_index_i.add(Text("对角阵大小：" + str(trs_list[i]), font='思源黑体 CN Medium').next_to(picturei[i], UP))
+        '''
+        self.add(picture1, picturei[0])
+        '''
+        self.play(
+            Write(picture1),
+            Write(picturei[0]),
+            # Write(text_0),
+            # Write(text_i[0]),
+            # Write(text_index_i[0]),
+            run_time=3,
+            rate_func=smooth,
+        )
+        self.wait(3)
+        for i in range(len(picturei)-1):
+            self.play(
+                ReplacementTransform(picturei[i], picturei[i+1]),
+                # ReplacementTransform(text_i[i], text_i[i+1]),
+                # ReplacementTransform(text_index_i[i], text_index_i[i+1]),
+                run_time=1,
+                rate_func=smooth,
+            )
+            self.wait()
+        self.wait(3)
+        self.play(Erase(VGroup(*self.mobjects)))
+        self.wait()
+        '''
+
+
+        # img = cv2.imread(r"C:\Users\Administrator\Desktop\Singular Value Decomposition(SVD)\image6.jpg")#147*199
+        # picture1 = self.drawpicture(img, vague=3, reduce_scalar=1000).shift(LEFT*2)
+        # picture2 = self.drawpicture(img, vague=3, reduce_scalar=10).shift(RIGHT*2)
+        # self.add(picture1, picture2)
+
+        # img = cv2.imread(r"C:\Users\Administrator\Desktop\Singular Value Decomposition(SVD)\image7.jpg")#133*99
+        # picture1 = self.drawpicture(img, vague=30, scalar=5, reduce_scalar=1000).shift(LEFT * 3)
+        # picture2 = self.drawpicture(img, vague=30, scalar=5, reduce_scalar=10).shift(RIGHT * 3)
+        # self.add(picture1, picture2)
+        # u, s, vt = np.linalg.svd()
+
+    def get_reduce_matrix(self, img, vague=20):
+        width, height = int(len(img[0]) / vague) - 1, int(len(img) / vague) - 1
+        step = int(vague / 2)
+        matrix = []
+        for row in range(height):
+            row_vec = []
+            for col in range(width):
+                row_vec.append(img[vague*row+step][vague*col+step])
+            matrix.append(row_vec)
+        return np.array(matrix)
+
+    def get_svd_reduce(self, matrix, scalar=5):
+        b, g, r = [], [], []
+        for row in matrix:
+            b_row, g_row, r_row = [], [], []
+            for ele in row:
+                b_row.append(ele[0])
+                g_row.append(ele[1])
+                r_row.append(ele[2])
+            b.append(b_row)
+            g.append(g_row)
+            r.append(r_row)
+        bu, bs, bvt = np.linalg.svd(np.array(b), full_matrices=True)
+        gu, gs, gvt = np.linalg.svd(np.array(g), full_matrices=True)
+        ru, rs, rvt = np.linalg.svd(np.array(r), full_matrices=True)
+        # if len(bs) < scalar:
+        #     return matrix
+        # print(bu)
+        # print(len(bs))#101
+        # print(scalar)
+        diag_bs = np.zeros([len(bu[0]), len(bvt)])
+        diag_gs = np.zeros([len(gu[0]), len(gvt)])
+        diag_rs = np.zeros([len(ru[0]), len(rvt)])
+        for i in range(min(scalar, len(bu[0]), len(bvt))):
+            diag_bs[i][i] = bs[i]
+            diag_gs[i][i] = gs[i]
+            diag_rs[i][i] = rs[i]
+        # print(np.diag(bs))
+        b = np.dot(np.dot(bu, diag_bs), bvt)
+        g = np.dot(np.dot(gu, diag_gs), gvt)
+        r = np.dot(np.dot(ru, diag_rs), rvt)
+        reduce_mat = []
+        for row in range(len(b)):
+            rm_row = []
+            for col in range(len(b[row])):
+                rm_row.append([b[row][col], g[row][col], r[row][col]])
+            reduce_mat.append(rm_row)
+        return np.array(reduce_mat)
+
+    def drawpicture(self, img, vague=20, scalar=3.0, reduce_scalar=10):
+        width, height = int(len(img[0])/vague)-1, int(len(img)/vague)-1
+        picw, pich = scalar, height/width*scalar
+        block_scalar = picw/width
+        # start_pos = (picw-bolcw)/2*LEFT+(pich-bloch)/2*UP
+        start_pos = picw/2*LEFT+pich/2*UP
+        img = self.get_reduce_matrix(img, vague)
+        # print(img[0])
+        img = self.get_svd_reduce(img, reduce_scalar)
+        # print(img[10])
+
+        # print(img)
+        print(width, height)
+
+        color = "#"
+        for each in img[0][0][::-1]:
+            if each < 0:
+                each = 0
+            elc = str(hex(int(each)))
+            if len(elc) < 4:
+                color = color + "0" + elc[2:]
+            else:
+                color = color + elc[2:]
+        picture = VGroup(
+            Rectangle(
+                stroke_width=0,
+                stroke_color=color,
+                stroke_opacity=0,
+                # fill_color='#' + str(hex(img[0][0][0]))[2:] + str(hex(img[0][0][1]))[2:] + str(hex(img[0][0][2])[2:]),
+                fill_color=color,
+                fill_opacity=1,
+                width=block_scalar, height=block_scalar,
+            ).move_to(start_pos + block_scalar * UP)
+        )
+
+        mark_rect = picture[0]
+        for row in img:
+            mark = True
+            for ele in row:
+                color = "#"
+                for each in ele[::-1]:
+                    if each < 0:
+                        each = 0
+                    elc = str(hex(int(each)))
+                    if len(elc) < 4:
+                        color = color+"0"+elc[2:]
+                    else:
+                        color = color+elc[2:]
+                # print(color)
+                # return picture
+                picture.add(
+                    Rectangle(
+                        stroke_width=0,
+                        fill_color=color,
+                        fill_opacity=1,
+                        width=block_scalar, height=block_scalar,
+                    ).next_to(mark_rect if mark else picture[-1], DOWN if mark else RIGHT, buff=0)
+                )
+                if mark:
+                    mark_rect = picture[-1]
+                mark = False
+        # picture = picture[1:]
+        # self.add(picture)
+        # return picture
+        return picture[1:]
+
+class scene4(Scene):
+    CONFIG = {
+        "camera_config": {
+            # "background_color": '#FFFFFF',
+            },
+        }
+    def construct(self):
+        matrix = TextMobject(r"""
+            \begin{align}\begin{bmatrix}u_{11} & u_{12} & \cdots & u_{1k} & \cdots & u_{1m}\\
+            u_{21} & u_{22} & \cdots & u_{2k} & \cdots & u_{2m}\\
+            \vdots & \vdots & \ddots & \vdots & & \vdots\\
+            u_{k1} & u_{k2} & \cdots & u_{kk} & \cdots & u_{km}\\
+            \vdots & \vdots & & \vdots & \ddots & \vdots\\
+            u_{m1} & u_{m2} & \cdots & u_{mk} & \cdots & u_{mm}
+            \end{bmatrix}_{m \times m}
+            \begin{bmatrix}
+            \sigma_1 & & & & & & & &\\
+            & \sigma_2 & & & & & & &\\
+            & & \ddots   & & & & & &\\
+            & & & \sigma_k & & & & &\\
+            & & & & \sigma_{k+1}& & & &\\
+            & & & & & \ddots & & &\\
+            & & & & & &\sigma_{k+r=m} & \cdots & 0
+            \end{bmatrix}_{m \times n}
+            \begin{bmatrix}
+            v_{11} & v_{12} & \cdots & v_{1k} & \cdots & v_{1n}\\
+            v_{21} & v_{22} & \cdots & v_{2k} & \cdots & v_{2n}\\
+            \vdots & \vdots & \ddots & \vdots & & \vdots\\
+            v_{k1} & v_{k2} & \cdots & v_{kk} & \cdots & v_{kn}\\
+            \vdots & \vdots & & \vdots & \ddots & \vdots\\
+            v_{n1} & v_{n2} & \cdots & v_{nk} & \cdots & v_{nn}
+            \end{bmatrix}_{n \times n}\end{align}
+            """).scale(0.4)#0-124, 125-177, 178-302
+        # self.add(matrix[0][:303])
+        # debugTeX(self, matrix[0][:303])
+        rect1 = BackgroundRectangle(matrix[0][137:146], color='#C0FF3E').set_opacity(0.2)
+        rect2 = BackgroundRectangle(matrix[0][146:159], color='#E9967A').set_opacity(0.2)
+        rect3 = BackgroundRectangle(VGroup(matrix[0][10], matrix[0][105]), color='#C0FF3E').set_opacity(0.2)
+        rect4 = BackgroundRectangle(VGroup(matrix[0][22], matrix[0][111], matrix[0][25]), color='#E9967A').set_opacity(0.2)
+        rect5 = BackgroundRectangle(VGroup(matrix[0][188], matrix[0][256]), color='#C0FF3E').set_opacity(0.2)
+        rect6 = BackgroundRectangle(VGroup(matrix[0][257], matrix[0][289], matrix[0][272]), color='#E9967A').set_opacity(0.2)
+        rectg = VGroup(rect1, rect2, rect3, rect4, rect5, rect6).set_fill(opacity=0.3)
+        # self.add(rect1, rect2, rect3, rect4, rect5, rect6)
+        arrow1 = Arrow(UP*2,   (rect3.get_vertices()[0]+rect3.get_vertices()[1])/2, stroke_width=5,
+                       max_tip_length_to_length_ratio=0.1/np.linalg.norm(UP*2-(rect3.get_vertices()[0]+rect3.get_vertices()[1])/2)).set_stroke(width=5)
+        arrow2 = Arrow(UP*2,   (rect1.get_vertices()[0]+rect1.get_vertices()[1])/2, stroke_width=5,
+                       max_tip_length_to_length_ratio=0.1/np.linalg.norm(UP*2-(rect1.get_vertices()[0]+rect1.get_vertices()[1])/2)).set_stroke(width=5)
+        arrow3 = Arrow(UP*2,   (rect5.get_vertices()[0]+rect5.get_vertices()[1])/2, stroke_width=5,
+                       max_tip_length_to_length_ratio=0.1/np.linalg.norm(UP*2-(rect5.get_vertices()[0]+rect5.get_vertices()[1])/2)).set_stroke(width=5)
+        arrow4 = Arrow(DOWN*2, (rect4.get_vertices()[2]+rect4.get_vertices()[3])/2, stroke_width=5,
+                       max_tip_length_to_length_ratio=0.1/np.linalg.norm(DOWN*2-(rect4.get_vertices()[2]+rect4.get_vertices()[3])/2)).set_stroke(width=5)
+        arrow5 = Arrow(DOWN*2, (rect2.get_vertices()[2]+rect2.get_vertices()[3])/2, stroke_width=5,
+                       max_tip_length_to_length_ratio=0.1/np.linalg.norm(DOWN*2-(rect2.get_vertices()[2]+rect2.get_vertices()[3])/2)).set_stroke(width=5)
+        arrow6 = Arrow(DOWN*2, (rect6.get_vertices()[2]+rect6.get_vertices()[3])/2, stroke_width=5,
+                       max_tip_length_to_length_ratio=0.1/np.linalg.norm(DOWN*2-(rect6.get_vertices()[2]+rect6.get_vertices()[3])/2)).set_stroke(width=5)
+        textcn1 = Text("实际存储的数据", font='思源黑体 CN Medium').move_to(UP*2.3)
+        textcn2 = Text("无需存储的数据", font='思源黑体 CN Medium').move_to(DOWN*2.3)
+        arrg1 = VGroup(arrow1, arrow2, arrow3, textcn1)
+        arrg2 = VGroup(arrow4, arrow5, arrow6, textcn2)
+
+        textcn3 = VGroup(
+            Text("U", font='思源黑体 CN Medium').next_to(matrix, LEFT),
+            Text("Σ", font='思源黑体 CN Medium').next_to(matrix, UP, buff=0),
+            Text("V", font='思源黑体 CN Medium').next_to(matrix, RIGHT),
+        )
+        textcn3.add(Text("T", font='思源黑体 CN Medium').scale(0.5).next_to(textcn3[-1], UR, buff=0.01))
+        # self.add(rectg)
+
+        # self.add(arrg1, arrg2)
+        self.wait()
+        self.play(Write(matrix[0][:303]), run_time=5, rate_func=smooth)
+        self.play(Write(textcn3))
+        self.wait()
+        self.play(matrix[0][0:125].set_opacity, 0, run_time=1, rate_func=smooth)
+        self.play(matrix[0][0:125].set_opacity, 1, run_time=1, rate_func=smooth)
+        self.wait()
+        self.play(matrix[0][125:178].set_opacity, 0, run_time=1, rate_func=smooth)
+        self.play(matrix[0][125:178].set_opacity, 1, run_time=1, rate_func=smooth)
+        self.wait()
+        self.play(matrix[0][178:303].set_opacity, 0, run_time=1, rate_func=smooth)
+        self.play(matrix[0][178:303].set_opacity, 1, run_time=1, rate_func=smooth)
+        self.wait()
+        self.play(ShowCreation(rectg), run_time=5, rate_func=smooth)
+        self.wait()
+        self.play(FadeOut(VGroup(rect2, rect4)), run_time=1, rate_func=smooth)
+        self.play(FadeIn(VGroup(rect2, rect4)), run_time=1, rate_func=smooth)
+        self.wait()
+        self.play(FadeOut(VGroup(rect2, rect6)), run_time=1, rate_func=smooth)
+        self.play(FadeIn(VGroup(rect2, rect6)), run_time=1, rate_func=smooth)
+        self.wait()
+        self.play(ShowCreation(arrg1), run_time=3, rate_func=smooth)
+        self.play(ShowCreation(arrg2), run_time=3, rate_func=smooth)
+        self.wait()
+        self.play(Erase(VGroup(*self.mobjects)))
+        self.wait()
