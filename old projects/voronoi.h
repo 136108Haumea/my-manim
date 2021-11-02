@@ -9,7 +9,7 @@ auto ev = np.pow(np.exp(1), PI) / np.pow(10, 6);//0.000023
 auto ev_sq = ev * ev;
 
 //���������
-GLfloat Infinity = 333;
+double Infinity = 333;
 
 // �ж��������Ƿ���ȣ�С������ƽ��������ȣ�O(1)
 auto point_is_equal(Point p, Point q) {
@@ -34,7 +34,7 @@ auto ToLeft(Point p, Point q, Point b) {
     auto a = cross2(p, q, b);
     // С������Ϊ��������
     if (abs(a) < ev)
-        return (GLfloat)0;
+        return (double)0;
     // ����else abs(a) >= ev:
     return a;
 };
